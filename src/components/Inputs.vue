@@ -8,7 +8,7 @@ const quaternion = ref(new Quaternion(0, 0, 0, 1));
 const numericalInputs = ref([1, 0, 0, 0]);
 const vectorInputs = ref([1, 0, 0]);
 
-const emit = defineEmits(["quaternion", "vector"]);
+const emit = defineEmits(["quaternion", "vector", "guidelines"]);
 
 watch(quaternion, (newQuaternion) => {
     numericalInputs.value = [newQuaternion.w, newQuaternion.x, newQuaternion.y, newQuaternion.z];
@@ -108,6 +108,14 @@ const updateVectorInput = (index: number, event: Event) => {
             </div>
         </div>
         <h1>Information</h1>
+        <div class="checkbox">
+            <label for="guidelines">Display Guidelines</label>
+            <input 
+                name="guidelines" 
+                type="checkbox"
+                @input="$emit('guidelines', ($event.target as HTMLInputElement).checked)"
+            >
+        </div>
     </div>
 </template>
 
@@ -121,6 +129,15 @@ const updateVectorInput = (index: number, event: Event) => {
 
     h1 {
         text-shadow: 4px 4px rgb(68, 68, 68);
+    }
+
+    .checkbox {
+        display: flex;
+        border-left: solid rgb(147, 147, 147);
+        padding: 5px;
+        input {
+            margin: 5px;
+        }
     }
 
     .inputs {

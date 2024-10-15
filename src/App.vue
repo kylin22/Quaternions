@@ -7,14 +7,20 @@
 
   const quaternion = ref(new Quaternion(0, 0, 0, 1));
   const vector = ref(new Vector3(1, 0, 0));
+  const guidelines = ref(false);
   provide("quaternion", quaternion);
   provide("vector", vector);
+  provide("guidelines", guidelines);
 </script>
 
 <template>
   <div id="container">
     <QuaternionDisplay ref="quaternion"/>
-    <Inputs @quaternion="(inputQuaternion) => {quaternion = inputQuaternion;}" @vector="(inputVector) => {vector = inputVector;}"/>
+    <Inputs 
+      @quaternion="(inputQuaternion) => {quaternion = inputQuaternion;}" 
+      @vector="(inputVector) => {vector = inputVector;}"
+      @guidelines="(input) => {guidelines = input;}"
+    />
   </div>
 </template>
 
