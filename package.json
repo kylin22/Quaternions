@@ -16,14 +16,9 @@
     "@tresjs/cientos": "^4.0.2",
     "@tresjs/core": "^4.2.10",
     "axios": "^1.7.7",
-    "katex": "^0.16.11",
-    "latex.css": "^1.11.0",
-    "mathjax-node": "^1.2.1",
-    "mathmesh": "^0.0.9",
     "pinia": "^2.0.0-rc.9",
     "three": "^0.168.0",
     "vue": "^3.2.6",
-    "vue-katex": "^0.5.0",
     "vue-router": "^4.0.11"
   },
   "devDependencies": {
