@@ -169,7 +169,7 @@ const updateRadiusTrace = (quaternion: Quaternion) => {
             <Suspense v-if="axisVector.x !== 0 || axisVector.y !== 0 || axisVector.z !== 0">
                 <Text3D
                     :quaternion="new Quaternion().copy(cameraQuaternion)"
-                    :text="`${radToDeg(theta).toFixed(2)}°`"
+                    :text="`${radToDeg(theta) < 180 ? radToDeg(theta).toFixed(2) : (-radToDeg(theta) + 360).toFixed(2)}°`"
                     :size="0.04"
                     :height="0.001" 
                     font="/Roboto_Regular.json" 
