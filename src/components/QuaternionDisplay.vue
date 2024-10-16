@@ -21,13 +21,13 @@ const axes = [
 ];
 
 const inputQuaternion = inject<Ref<Quaternion>>("quaternion")!;
-// const rotatedVector = inject<Ref<Vector3>>("vector")!;
+const rotatedVector = inject<Ref<Vector3>>("vector")!;
 const guidelines = inject<Ref<Boolean>>("guidelines")!;
 
 const axisVector = ref(new Vector3(0, 0, 0));
 const axisProjectionVector = ref(new Vector3(0, 0, 0));
 const lineTracePoints = ref([new Vector3(0, 0, 0)]);
-const rotatedVector = ref(new Vector3(AXIS_LENGTH, 0, 0));
+// const rotatedVector = ref(new Vector3(AXIS_LENGTH, 0, 0));
 const radiusLinePoints = ref([new Vector3(0, 0, 0)]);
 const theta = ref(0);
 const resultantVector = ref(new Vector3(1, 0, 0));
@@ -47,6 +47,15 @@ watch(inputQuaternion, (newQuaternion) => {
     axisVector.value = findRotationAxis(newQuaternion);
     lineTracePoints.value = updateLineTrace(newQuaternion);
     radiusLinePoints.value = updateRadiusTrace(newQuaternion);
+    axisProjectionVector.value = new Vector3(axisVector.value.x, 0, axisVector.value.z);
+    resultantProjectionVector.value = new Vector3(resultantVector.value.x, 0, resultantVector.value.z);
+}, { deep: true });
+
+watch(rotatedVector, (newVector) => {
+    resultantVector.value = new Vector3().copy(newVector).applyQuaternion(inputQuaternion.value);
+    axisVector.value = findRotationAxis(inputQuaternion.value);
+    lineTracePoints.value = updateLineTrace(inputQuaternion.value);
+    radiusLinePoints.value = updateRadiusTrace(inputQuaternion.value);
     axisProjectionVector.value = new Vector3(axisVector.value.x, 0, axisVector.value.z);
     resultantProjectionVector.value = new Vector3(resultantVector.value.x, 0, resultantVector.value.z);
 }, { deep: true });
@@ -123,14 +132,24 @@ const updateRadiusTrace = (quaternion: Quaternion) => {
                 color="#326ba8"
             />
             <Line2 v-if="axisVector.x !== 0 || axisVector.y !== 0 || axisVector.z !== 0"
+                :points="[new Vector3(0, 0, 0), rotatedVector]" 
+                :line-width="VECTOR_WIDTH" 
+                color="yellow"
+            />
+            <Line2 v-if="axisVector.x !== 0 || axisVector.y !== 0 || axisVector.z !== 0"
                 :points="[new Vector3(0, 0, 0), resultantVector]" 
                 :line-width="VECTOR_WIDTH" 
-                color="red"
+                color="yellow"
             />
             <Line2 v-if="guidelines && (axisVector.x !== 0 || axisVector.y !== 0 || axisVector.z !== 0)"
                 :points="[new Vector3(0, 0, 0), resultantProjectionVector, resultantVector]" 
                 :line-width="GUIDELINE_WIDTH" 
-                color="red"
+                color="yellow"
+            />
+            <Line2 v-if="guidelines && (axisVector.x !== 0 || axisVector.y !== 0 || axisVector.z !== 0)"
+                :points="[new Vector3(0, 0, 0), new Vector3(rotatedVector.x, 0, rotatedVector.z), rotatedVector]" 
+                :line-width="GUIDELINE_WIDTH" 
+                color="yellow"
             />
             <Line2 v-if="guidelines && (axisVector.x !== 0 || axisVector.y !== 0 || axisVector.z !== 0)"
                 :points="radiusLinePoints" 

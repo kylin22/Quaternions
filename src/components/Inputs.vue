@@ -47,8 +47,14 @@ const updateQuaternionInput = (index: number, event: Event) => {
 
 const updateVectorInput = (index: number, event: Event) => {
     const inputValue = (event.target as HTMLInputElement).value;
-    const parsedValue = parseFloat(inputValue);
+    let parsedValue = parseFloat(inputValue);
     if (!isNaN(parsedValue)) {
+        if (parsedValue > 1) {
+            parsedValue = 1;
+        }
+        if (parsedValue < -1) {
+            parsedValue = -1;
+        }
         vectorInputs.value[index] = parsedValue;
     }
     emit("vector", new Vector3(...vectorInputs.value));
@@ -67,7 +73,7 @@ const updateVectorInput = (index: number, event: Event) => {
                     min="-1" 
                     max="1" 
                     :value="numericalInputs[index].toFixed(3)"
-                    @input="updateQuaternionInput(index, $event)"
+                    @keydown.enter="updateQuaternionInput(index, $event)"
                     class="quaternion-input"
                 >
                 <input 
@@ -92,7 +98,7 @@ const updateVectorInput = (index: number, event: Event) => {
                     min="-1" 
                     max="1" 
                     :value="vectorInputs[index].toFixed(3)"
-                    @input="updateVectorInput(index, $event)"
+                    @keydown.enter="updateVectorInput(index, $event)"
                     class="quaternion-input"
                 >
                 <input 
